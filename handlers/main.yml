@@ -1,0 +1,7 @@
+## handlers file for mariadb
+---
+- name: restart service
+  tags:
+    - mariadb
+    - configuration
+  service: name={{ mariadb_service_name }} state=restarted

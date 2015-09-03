@@ -1,0 +1,16 @@
+---
+galaxy_info:
+  author: "Alessio Cassibba (x-drum)"
+  description: MariaDB (An enhanced, drop-in replacement for MySQL) server role.
+  license: GPLV2
+  min_ansible_version: 1.8
+  platforms:
+   - name: EL
+     versions:
+      - 6
+   - name: FreeBSD
+     versions:
+      - 10
+  categories:
+   - database
+dependencies: []

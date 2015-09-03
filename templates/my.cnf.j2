@@ -1,0 +1,50 @@
+# {{ ansible_managed }}
+
+[client]
+port = {{ mariadb_port }}
+socket = {{ mariadb_socket }}
+
+[mysqld]
+port = {{ mariadb_port }}
+socket = {{ mariadb_socket }}
+{% if mariadb_skip_networking == True %}
+skip-networking
+{% else %}
+bind-address = {{ mariadb_bind_address }}
+{% endif %}
+skip-external-locking
+key_buffer_size = {{ mariadb_key_buffer_size }}
+max_allowed_packet = {{ mariadb_max_allowed_packet }}
+table_open_cache = {{ mariadb_table_open_cache }}
+sort_buffer_size = {{ mariadb_sort_buffer_size }}
+read_buffer_size = {{ mariadb_read_buffer_size }}
+read_rnd_buffer_size = {{ mariadb_read_rnd_buffer_size }}
+myisam_sort_buffer_size = {{ mariadb_myisam_sort_buffer_size }}
+query_cache_size = {{ mariadb_query_cache_size }}
+thread_concurrency = {{ mariadb_thread_concurrency }}
+log-bin = mysql-bin
+binlog_format = mixed
+server-id = 1
+innodb_data_home_dir = {{ mariadb_innodb_data_home_dir }}
+innodb_data_file_path = {{ mariadb_innodb_data_file_path }}
+innodb_log_group_home_dir = {{ mariadb_innodb_log_group_home_dir }}
+innodb_buffer_pool_size = {{ mariadb_innodb_buffer_pool_size }}
+innodb_log_file_size = {{ mariadb_innodb_log_file_size }}
+innodb_log_buffer_size = {{ mariadb_innodb_log_buffer_size }}
+innodb_flush_log_at_trx_commit = {{ mariadb_innodb_flush_log_at_trx_commit }}
+innodb_lock_wait_timeout = {{ mariadb_innodb_lock_wait_timeout }}
+local-infile=0
+
+[mysqldump]
+quick
+max_allowed_packet = {{ mariadb_max_allowed_packet }}
+
+[mysql]
+no-auto-rehash
+
+[myisamchk]
+key_buffer_size = {{ mariadb_myisamchk_key_buffer_size }}
+sort_buffer_size = {{ mariadb_myisamchk_sort_buffer_size }}
+
+[mysqlhotcopy]
+interactive-timeout

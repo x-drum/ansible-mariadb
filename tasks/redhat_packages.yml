@@ -1,0 +1,20 @@
+- name: Import MariaDB GPG Key
+  tags:
+    - mariadb
+    - prereq
+    - packages
+  rpm_key: key=https://yum.mariadb.org/RPM-GPG-KEY-MariaDB state=present
+
+- name: Enable MariaDB yum repo
+  tags:
+    - mariadb
+    - prereq
+    - packages
+  template: src=yumepo_mariadb.j2 dest=/etc/yum.repos.d/mariadb.repo
+
+- name: install packages for RedHat
+  tags:
+    - mariadb
+    - packages
+  yum: pkg={{item}} state=present
+  with_items: mariadb_package_names

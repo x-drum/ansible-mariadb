@@ -1,0 +1,17 @@
+# FreeBSD Family OS defaults
+---
+default_owner: root
+default_group: root
+mariadb_version: 10.0
+mariadb_package_names: 
+  - "MariaDB-server"
+  - "MariaDB-client"
+mariadb_service_name: mysql
+mariadb_owner: mysql
+mariadb_group: mysql
+mariadb_datadir: "/var/lib/mysql"
+mariadb_socket: "{{ mariadb_datadir }}/mysql.sock"
+mariadb_pid: "{{ mariadb_datadir }}/{{ ansible_hostname }}.pid"
+mariadb_basedir: /usr
+mariadb_conf_file: "/etc/my.cnf.d/server.cnf"
+mariadb_os_supported: yes

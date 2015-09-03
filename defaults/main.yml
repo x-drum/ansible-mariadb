@@ -1,0 +1,29 @@
+## mariadb configuration defaults
+---
+mariadb_conf_server: my.cnf.j2
+mariadb_conf_client: my.cnf_client.j2
+mariadb_skip_networking: False
+mariadb_bind_address: 127.0.0.1
+mariadb_port: 3306
+mariadb_key_buffer_size: 16K
+mariadb_max_allowed_packet: 1M
+mariadb_table_open_cache: 4
+mariadb_sort_buffer_size: 64K
+mariadb_read_buffer_size: 256K
+mariadb_read_rnd_buffer_size: 256K
+mariadb_myisam_sort_buffer_size: 64K
+mariadb_query_cache_size: 16M
+mariadb_thread_concurrency: 8
+mariadb_innodb_data_home_dir: /var/db/mysql
+mariadb_innodb_data_file_path: "ibdata1:10M:autoextend"
+mariadb_innodb_log_group_home_dir: /var/db/mysql
+mariadb_innodb_buffer_pool_size: 16M
+mariadb_innodb_log_file_size: 5M
+mariadb_innodb_log_buffer_size: 8M
+mariadb_innodb_flush_log_at_trx_commit: 1
+mariadb_innodb_lock_wait_timeout: 50
+mariadb_myisamchk_key_buffer_size: 8M
+mariadb_myisamchk_sort_buffer_size: 8M
+mariadb_root_username: root
+mariadb_root_password: changeit
+mariadb_os_supported: no

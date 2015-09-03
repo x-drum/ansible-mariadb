@@ -1,0 +1,91 @@
+## installs and configures mariadb
+---
+- name: Set OS dependent variables
+  tags:
+    - mariadb
+    - prereq
+  include_vars: "{{ item }}"
+  with_first_found:
+   - "{{ ansible_distribution }}_{{ ansible_distribution_major_version }}.yml"
+   - "{{ ansible_distribution }}.yml"
+   - "{{ ansible_os_family }}_{{ ansible_distribution_major_version }}.yml"
+   - "{{ ansible_os_family }}.yml"
+   - default.yml
+
+- include: freebsd_packages.yml
+  when: ansible_distribution == 'FreeBSD'
+
+- include: redhat_packages.yml
+  when: ansible_os_family == 'RedHat'
+
+- name: check datadir initialization
+  tags:
+    - mariadb
+    - configuration
+  stat: path={{ mariadb_datadir }}/mysql
+  register: fs_datadir
+
+- name: install default configuration
+  tags:
+    - mariadb
+    - configuration
+  template: src={{ mariadb_conf_server }} dest={{ mariadb_conf_file }} owner={{ mariadb_owner }} group={{ mariadb_group }} mode=0644
+  when: mariadb_os_supported == True
+
+- name: create default datadir
+  tags:
+    - mariadb
+    - configuration
+  command: '{{ mariadb_basedir }}/bin/mysql_install_db --basedir={{ mariadb_basedir }} --datadir={{ mariadb_datadir }} --force'
+  when: mariadb_os_supported == True and fs_datadir.stat.exists == False
+
+- name: update datadir permissions
+  tags:
+    - mariadb
+    - configuration
+  file: path={{ mariadb_datadir }} owner={{ mariadb_owner }} group={{ mariadb_group }} mode=0755 recurse=yes
+  notify: restart service
+  when: mariadb_os_supported == True
+
+- name: enable service
+  tags:
+    - mariadb
+    - configuration
+  service: name={{ mariadb_service_name }} enabled=yes state=started
+  when: mariadb_os_supported == True
+
+- name: check database configuration
+  tags:
+    - mariadb
+    - configuration
+  stat: path={{ mariadb_datadir }}/test
+  register: fs_testdb
+
+- name: drop unused tables/users
+  tags:
+    - mariadb
+    - configuration
+  command: 'mysql -NBe "{{ item }}"'
+  with_items:
+    - DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1')
+    - DELETE FROM mysql.user WHERE User=''
+    - DELETE FROM mysql.db WHERE Db='test' OR Db='test\_%'
+    - DROP DATABASE test
+    - DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%'
+    - FLUSH PRIVILEGES
+  changed_when: False
+  when: mariadb_os_supported == True and fs_testdb.stat.exists == True
+
+- name: update root password
+  tags:
+    - mariadb
+    - configuration
+  command: "mysql -NBe 'UPDATE mysql.user SET password=PASSWORD(\"{{ mariadb_root_password }}\") WHERE User=\"root\"'"
+  changed_when: False
+  when: mariadb_os_supported == True
+
+- name: Install root client configuration
+  tags:
+    - mariadb
+    - configuration
+  template: src={{ mariadb_conf_client }} dest=/root/.my.cnf owner={{ default_owner }} group={{ default_group }} mode=0600
