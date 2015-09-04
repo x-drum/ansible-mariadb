@@ -41,7 +41,7 @@ Examples
 - hosts: all
   remote_user: root
   sudo: no
-  - roles:
+  roles:
     - { role: mariadb }
 ```
 
@@ -50,7 +50,7 @@ Examples
 - hosts: all
   remote_user: root
   sudo: no
-  - vars:
+  vars:
     - mariadb_bind_address: 192.168.1.1
     - mariadb_port: 3309
     - mariadb_root_password: Sup3rs3cret
@@ -59,7 +59,7 @@ Examples
     - mariadb_table_open_cache: 4
     - mariadb_sort_buffer_size: 64K
     - mariadb_read_buffer_size: 256K
-  - roles:
+  roles:
     - { role: mariadb }
 ```
 
@@ -68,9 +68,9 @@ Examples
 - hosts: all
   remote_user: root
   sudo: no
-  - vars:
+  vars:
     mariadb_conf_server: templates/mariadb_production_template.j2
-  - roles:
+  roles:
     - { role: mariadb }
 ```
 
