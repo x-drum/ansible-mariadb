@@ -1,4 +1,4 @@
-# FreeBSD Family OS defaults
+# RedHat Family OS defaults
 ---
 default_owner: root
 default_group: root
