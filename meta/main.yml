@@ -10,7 +10,7 @@ galaxy_info:
       - 6
    - name: FreeBSD
      versions:
-      - 10
+      - all
   categories:
    - database
    - database:sql
