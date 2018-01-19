@@ -6,3 +6,10 @@
     - packages
   pkgng: pkg={{item}} state=present
   with_items: "{{mariadb_package_names}}" 
+
+- name: Install some packages from ports
+  portinstall:
+      name: "{{ item }}"
+      state: present
+  with_items: 
+    - py27-MySQLdb
