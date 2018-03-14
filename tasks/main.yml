@@ -12,10 +12,10 @@
    - "{{ ansible_os_family }}.yml"
    - default.yml
 
-- include: freebsd_packages.yml
+- include_tasks: freebsd_packages.yml
   when: ansible_distribution == 'FreeBSD'
 
-- include: redhat_packages.yml
+- include_tasks: redhat_packages.yml
   when: ansible_os_family == 'RedHat'
 
 - name: check datadir initialization
